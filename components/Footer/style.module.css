@@ -19,18 +19,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: dark;
+  color: white;
   font-size: 1rem;
-}
-
-@media (min-width: 1050px) {
-  .footer a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 1rem;
-  }
 }
 
 .social {
