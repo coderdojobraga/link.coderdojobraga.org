@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ConfigProvider } from 'antd';
-import dbConnect from '~/lib/database';
-import withSession from '~/lib/session';
-import Account from '~/models/Account';
+import { withCurrentUser } from '~/lib/auth';
+import { IAccount } from '~/models/Account';
 import { AdminContextProvider } from '~/components/Admin/Context';
 import LinksTable from '~/components/Admin/LinksTable';
 import FormsTable from '~/components/Admin/FormsTable';
@@ -14,36 +13,9 @@ import Footer from '~/components/Footer';
 
 import 'antd/dist/antd.css';
 
-export const getServerSideProps = withSession(async function ({ req }) {
-  const auth = req.session.get('auth');
+export const getServerSideProps = withCurrentUser();
 
-  if (auth && auth.id) {
-    await dbConnect();
-
-    const user = await Account.findById(auth.id);
-
-    if (user) {
-      const { password, ...data } = user.toObject();
-
-      data._id = data._id.toString();
-      data.created = data.created.toString();
-      data.updated = data.updated.toString();
-
-      return {
-        props: { currentUser: data }
-      };
-    }
-  }
-
-  return {
-    redirect: {
-      destination: '/admin/login',
-      permanent: false
-    }
-  };
-});
-
-export default function Admin({ currentUser }) {
+export default function Admin({ currentUser }: { currentUser: IAccount }) {
   const router = useRouter();
   const { tab } = router.query;
 

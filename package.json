@@ -37,7 +37,6 @@
     "redaxios": "^0.4.1"
   },
   "devDependencies": {
-    "@types/mongoose": "^5.11.97",
     "@types/react": "^17.0.19",
     "eslint": "^7.30.0",
     "eslint-config-next": "^11.0.1",
