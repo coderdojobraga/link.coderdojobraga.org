@@ -39,11 +39,9 @@ function AccountsTable() {
       title: 'Photo',
       width: 50,
       render: function Photo(_, record) {
-        return (
-          <Avatar style={{ backgroundColor: getHexColor(record.name) }}>
-            {getNameInitials(record.name)}
-          </Avatar>
-        );
+        const backgroundColor = getHexColor(record.name);
+
+        return <Avatar style={{ backgroundColor }}>{getNameInitials(record.name)}</Avatar>;
       }
     },
     {

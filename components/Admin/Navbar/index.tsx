@@ -34,42 +34,44 @@ interface NavbarProps {
   user: IAccount;
 }
 
-const Navbar = ({ selected, user }: NavbarProps) => (
-  <Row justify="space-between">
-    <Col span={12}>
-      <Menu selectedKeys={[selected]} mode="horizontal">
-        {Object.keys(navbar)
-          .filter((key) => !navbar[key].admin || user.admin)
-          .map((key) => (
-            <Menu.Item key={key} icon={navbar[key].icon}>
-              <Link href={`/admin?tab=${key}`}>
-                <a>{navbar[key].title}</a>
+const Navbar = ({ selected, user }: NavbarProps) => {
+  const backgroundColor = getHexColor(user.name);
+
+  return (
+    <Row justify="space-between">
+      <Col span={12}>
+        <Menu selectedKeys={[selected]} mode="horizontal">
+          {Object.keys(navbar)
+            .filter((key) => !navbar[key].admin || user.admin)
+            .map((key) => (
+              <Menu.Item key={key} icon={navbar[key].icon}>
+                <Link href={`/admin?tab=${key}`}>
+                  <a>{navbar[key].title}</a>
+                </Link>
+              </Menu.Item>
+            ))}
+        </Menu>
+      </Col>
+      <Col>
+        <Menu mode="horizontal">
+          <Menu.SubMenu
+            className={styles.avatar}
+            title={
+              <Space>
+                <Avatar style={{ backgroundColor }}>{getNameInitials(user.name)}</Avatar>
+                <Typography.Text>{user.name}</Typography.Text>
+              </Space>
+            }>
+            <Menu.Item key="logout">
+              <Link href="/api/auth/logout">
+                <a>logout</a>
               </Link>
             </Menu.Item>
-          ))}
-      </Menu>
-    </Col>
-    <Col>
-      <Menu mode="horizontal">
-        <Menu.SubMenu
-          className={styles.avatar}
-          title={
-            <Space>
-              <Avatar style={{ backgroundColor: getHexColor(user.name) }}>
-                {getNameInitials(user.name)}
-              </Avatar>
-              <Typography.Text>{user.name}</Typography.Text>
-            </Space>
-          }>
-          <Menu.Item key="logout">
-            <Link href="/api/auth/logout">
-              <a>logout</a>
-            </Link>
-          </Menu.Item>
-        </Menu.SubMenu>
-      </Menu>
-    </Col>
-  </Row>
-);
+          </Menu.SubMenu>
+        </Menu>
+      </Col>
+    </Row>
+  );
+};
 
 export default Navbar;
