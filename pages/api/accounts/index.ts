@@ -1,6 +1,6 @@
 import type { NextApiResponse } from 'next';
 import pick from 'lodash/pick';
-import withAuth from '~/lib/auth';
+import { withAuth } from '~/lib/auth';
 import { NextIronRequest } from '~/lib/session';
 import dbConnect from '~/lib/database';
 import Account, { IAccount } from '~/models/Account';

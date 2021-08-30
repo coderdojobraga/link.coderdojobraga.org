@@ -1,5 +1,5 @@
 import type { NextApiResponse } from 'next';
-import withAuth from '~/lib/auth';
+import { withAuth } from '~/lib/auth';
 import { NextIronRequest } from '~/lib/session';
 import dbConnect from '~/lib/database';
 import Redirect, { IRedirect } from '~/models/Redirect';

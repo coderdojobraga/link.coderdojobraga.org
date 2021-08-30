@@ -1,6 +1,5 @@
 export function getNameInitials(name: string = '?'): string {
   const initials = name?.split(' ').map((name) => (/[A-Z]/.test(name[0]) ? name[0] : null));
-  console.log(initials);
 
   return initials.length > 2 ? initials[0] + initials[initials.length - 1] : initials.join('');
 }

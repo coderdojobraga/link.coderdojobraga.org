@@ -31,7 +31,7 @@ export async function login({ email, password }: LoginParams): Promise<IAccount>
   return null;
 }
 
-export default function withAuth(handler: NextIronHandler) {
+export function withAuth(handler: NextIronHandler) {
   return withSession(async (req, res) => {
     const auth = req.session.get('auth');
 
@@ -52,5 +52,34 @@ export default function withAuth(handler: NextIronHandler) {
     req.session.set('currentUser', data);
 
     return handler(req, res);
+  });
+}
+
+export function withCurrentUser() {
+  return withSession(async ({ req }) => {
+    const auth = req.session.get('auth');
+
+    if (auth && auth.id) {
+      await dbConnect();
+
+      const user = await Account.findById(auth.id);
+
+      if (user) {
+        const { password, ...data } = user.toObject();
+        data._id = data._id.toString();
+        data.created = data.created.toString();
+        data.updated = data.updated.toString();
+        return {
+          props: { currentUser: data }
+        };
+      }
+    }
+
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false
+      }
+    };
   });
 }

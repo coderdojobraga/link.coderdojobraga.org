@@ -25,7 +25,12 @@ export default async function dbConnect() {
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
-        bufferCommands: false
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        bufferCommands: false,
+        bufferMaxEntries: 0,
+        useFindAndModify: false,
+        useCreateIndex: true
       })
       .then((mongoose) => {
         return mongoose;
