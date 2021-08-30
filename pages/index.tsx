@@ -25,12 +25,6 @@ export const getStaticProps: GetStaticProps = async () => {
 export default function Home({ links }: { links: ILink[] }) {
   return (
     <Layout title="CoderDojo Braga">
-      <div>
-        <div className={styles.rectangle} />
-        <div className={styles.curve} />
-        <div className={styles.base} />
-      </div>
-
       <div className={styles.logo}>
         <Image src="/logo_lettering.png" alt="CoderDojo Braga Logo" width={345} height={100} />
       </div>
