@@ -26,7 +26,7 @@ export default function Home({ links }: { links: ILink[] }) {
   return (
     <Layout title="CoderDojo Braga">
       <div className={styles.logo}>
-        <Image src="/logo_lettering.png" alt="CoderDojo Braga Logo" width={345} height={100} />
+        <Image src="/logo-lettering-dark.svg" alt="CoderDojo Braga Logo" width={345} height={100} />
       </div>
 
       <p className={styles.description}>
