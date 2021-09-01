@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import Image from 'next/image';
 import { ConfigProvider, Form, Input, Layout, Button, Row } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -26,6 +27,9 @@ export default function Login() {
 
   return (
     <ConfigProvider componentSize="large">
+      <Head>
+        <title>Login • CoderDojo Braga</title>
+      </Head>
       <Layout className={styles.layout}>
         <Layout.Content className={styles.content}>
           <Row className={styles.brand}>
