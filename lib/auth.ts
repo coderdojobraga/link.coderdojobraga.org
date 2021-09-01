@@ -83,3 +83,28 @@ export function withCurrentUser() {
     };
   });
 }
+
+export function withoutCurrentUser() {
+  return withSession(async ({ req }) => {
+    const auth = req.session.get('auth');
+
+    if (auth && auth.id) {
+      await dbConnect();
+
+      const user = await Account.findById(auth.id);
+
+      if (user) {
+        return {
+          redirect: {
+            destination: '/admin',
+            permanent: false
+          }
+        };
+      }
+    }
+
+    return {
+      props: {}
+    };
+  });
+}

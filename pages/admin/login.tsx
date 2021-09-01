@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { ConfigProvider, Form, Input, Layout, Button, Row } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import withSession from '~/lib/session';
+import { withoutCurrentUser } from '~/lib/auth';
 import Footer from '~/components/Footer';
 
 import API from '~/lib/api';
@@ -11,22 +11,7 @@ import 'antd/dist/antd.css';
 
 import styles from '~/styles/Login.module.css';
 
-export const getServerSideProps = withSession(async function ({ req }) {
-  const auth = req.session.get('auth');
-
-  if (auth && auth.id) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false
-      }
-    };
-  }
-
-  return {
-    props: {}
-  };
-});
+export const getServerSideProps = withoutCurrentUser();
 
 export default function Login() {
   const router = useRouter();
