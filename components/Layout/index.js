@@ -17,7 +17,7 @@ const Layout = ({ children, title }) => (
 
       <main className={styles.main}>{children}</main>
 
-      <Footer isThemeDark />
+      <Footer isDarkBackground={true} />
     </div>
   </div>
 );

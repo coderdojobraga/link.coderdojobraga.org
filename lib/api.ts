@@ -1,6 +1,6 @@
 import axios from 'redaxios';
 
-let APP_URL = process.env.NEXT_PUBLIC_APP_URL;
+export let APP_URL = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_VERCEL_URL;
 
 if (!/^https?:\/\//i.test(APP_URL)) {
   APP_URL = 'https://' + APP_URL;

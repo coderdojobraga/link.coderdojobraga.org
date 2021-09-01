@@ -12,8 +12,6 @@ import social from '~/data/social.json';
 
 import styles from './style.module.css';
 
-import logo from '../../public/logo_lettering_light.png';
-
 const logos = {
   facebook: IoLogoFacebook,
   instagram: IoLogoInstagram,
@@ -38,17 +36,22 @@ const SocialIcon = ({ name, url, username, tag }: SocialIconProps) => {
   );
 };
 
-const Footer = ({ isThemeDark = false }) => (
+const Footer = ({ isDarkBackground = false }) => (
   <footer className={styles.footer}>
-    <div className={`${styles.social} ${!isThemeDark && styles.dark}`}>
+    <div className={`${styles.social} ${isDarkBackground ? styles.darkmode : styles.lightmode}`}>
       {social.map((entry: SocialIconProps) => (
         <SocialIcon key={entry.tag} {...entry} />
       ))}
     </div>
-    <div className={`${styles.copyright} ${!isThemeDark && styles.dark}`}>
+    <div className={`${styles.copyright} ${isDarkBackground ? styles.darkmode : styles.lightmode}`}>
       <a href={settings.domain} target="_blank" rel="noopener noreferrer">
         hacked with <IoHeart className={styles.heart} size="1.2em" /> by
-        <Image width={70} height={24} src={logo} alt="CoderDojo's Logo" />
+        <Image
+          width={121}
+          height={30}
+          src={isDarkBackground ? '/logo-lettering-light.svg' : '/logo-lettering-dark.svg'}
+          alt="CoderDojo's Logo"
+        />
       </a>
     </div>
   </footer>

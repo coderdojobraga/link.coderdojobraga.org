@@ -19,8 +19,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
   font-size: 1rem;
+  color: dark;
+}
+
+.darkmode a {
+  color: white;
 }
 
 .social {
@@ -43,4 +47,8 @@
 .heart {
   margin: 0 0.2em;
   color: purple;
+}
+
+.logo {
+  padding: 200px;
 }

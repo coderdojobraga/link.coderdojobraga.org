@@ -29,7 +29,7 @@ export default function Login() {
       <Layout className={styles.layout}>
         <Layout.Content className={styles.content}>
           <Row className={styles.brand}>
-            <Image src="/logo_lettering.png" alt="CoderDojo Braga" width={364} height={106} />
+            <Image src="/logo-lettering-dark.svg" alt="CoderDojo Braga" width={364} height={106} />
           </Row>
 
           <Form name="normal_login" className={styles.form} onFinish={onFinish}>
@@ -68,7 +68,7 @@ export default function Login() {
           </Form>
         </Layout.Content>
         <Layout.Footer>
-          <Footer isThemeDark />
+          <Footer />
         </Layout.Footer>
       </Layout>
     </ConfigProvider>
