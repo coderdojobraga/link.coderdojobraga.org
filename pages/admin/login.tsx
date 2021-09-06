@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import { ConfigProvider, Form, Input, Layout, Button, Row } from 'antd';
+import { Alert, ConfigProvider, Form, Input, Layout, Button, Row } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { withoutCurrentUser } from '~/lib/auth';
 import Footer from '~/components/Footer';
@@ -14,15 +15,43 @@ import styles from '~/styles/Login.module.css';
 
 export const getServerSideProps = withoutCurrentUser();
 
+interface ErrorProps {
+  title: string;
+}
+
+const Error = ({ title }: ErrorProps) => {
+  if (!title) {
+    return null;
+  }
+
+  return (
+    <Form.Item>
+      <Alert message={title} type="error" showIcon />
+    </Form.Item>
+  );
+};
+
 export default function Login() {
   const router = useRouter();
+  const [errors, setErrors] = useState<string>('');
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const onFinish = (values) => {
+    setLoading(true);
     API.post('/api/auth/login', values)
       .then((_response) => {
         router.replace('/admin?tab=links');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if (error.status == 404) {
+          setErrors('Wrong credentials');
+        } else {
+          setErrors(error.data.error.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -64,8 +93,14 @@ export default function Login() {
               />
             </Form.Item>
 
+            <Error title={errors} />
+
             <Form.Item>
-              <Button type="primary" htmlType="submit" className={styles.submit}>
+              <Button
+                type="primary"
+                loading={isLoading}
+                htmlType="submit"
+                className={styles.submit}>
                 Log in
               </Button>
             </Form.Item>
