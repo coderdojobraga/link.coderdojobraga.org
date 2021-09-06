@@ -27,7 +27,7 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
   switch (method) {
     case 'GET':
       try {
-        const forms: IForm[] = await Form.find({}).sort({ created: 'asc' });
+        const forms: IForm[] = await Form.find({}).populate({ path: 'editedBy', select: '-password' }).sort({ created: 'asc' });
         res.status(200).json({ success: true, data: forms });
       } catch (error) {
         res.status(400).json({ success: false, error: { message: error.message } });
@@ -36,10 +36,11 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
     case 'POST':
       try {
         const params = pick(req.body, ['name', 'slug', 'url']);
+        const currentUser = req.session.get("currentUser");
 
-        const form = await Form.create(params);
+        const form = await Form.create({ ...params, editedBy: currentUser._id });
 
-        res.status(201).json({ success: true, data: form });
+        res.status(201).json({ success: true, data: await Form.populate(form, { path: 'editedBy', select: '-password' }) });
       } catch (error) {
         res.status(400).json({ success: false, error: { message: error.message } });
       }

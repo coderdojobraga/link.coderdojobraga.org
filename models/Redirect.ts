@@ -9,6 +9,7 @@ export interface IRedirect {
   url: string;
   link: string;
   visits: number;
+  editedBy: string;
   created: Date;
   updated: Date;
 }
@@ -19,6 +20,7 @@ const Redirect = new Schema<IRedirect>(
     slug: { type: String, unique: true, index: true, required: true, default: () => nanoid(5) },
     url: { type: String, required: true },
     visits: { type: Number, default: 0 },
+    editedBy: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
   },

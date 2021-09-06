@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Form, Typography, notification } from 'antd';
+import { Avatar, Form, Space, Typography, notification } from 'antd';
 import { DateTime } from 'luxon';
+import { getNameInitials, getHexColor } from '~/lib/strings';
 import useAsyncReducer from '~/hooks/useAsyncReducer';
 import { EditingContext, reducer as reducerEditing } from './Context';
 import EditableTable from '~/components/EditableTable';
@@ -74,6 +75,22 @@ function FormsTable() {
       align: 'center',
       width: 40,
       dataIndex: 'visits'
+    },
+    {
+      title: 'Edited by',
+      editable: false,
+      dataIndex: 'editedBy',
+      render: function UserPhoto(editedBy) {
+        if (!editedBy) return null;
+        const backgroundColor = getHexColor(editedBy.name);
+
+        return (
+          <Space>
+            <Avatar style={{ backgroundColor }}>{getNameInitials(editedBy.name)}</Avatar>
+            {editedBy.name}
+          </Space>
+        );
+      }
     },
     {
       title: 'Last edited',

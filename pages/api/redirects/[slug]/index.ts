@@ -52,14 +52,17 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
 
     case 'PUT':
       try {
+        const currentUser = req.session.get("currentUser");
+
         const redirect: IRedirect = await Redirect.findOneAndUpdate(
           { slug },
-          { ...req.body, updated: Date.now() },
+          { ...req.body, updated: Date.now(), editedBy: currentUser._id },
           {
             new: true,
             runValidators: true
           }
-        );
+        ).populate({ path: 'editedBy', select: '-password' });
+
         if (!redirect) {
           return res.status(404).json({ success: false, error: { message: 'Redirect not found' } });
         }
