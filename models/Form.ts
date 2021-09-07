@@ -8,6 +8,7 @@ export interface IForm {
   url: string;
   link: string;
   visits: number;
+  editedBy: string;
   created: Date;
   updated: Date;
 }
@@ -18,6 +19,7 @@ const Form = new Schema<IForm>(
     slug: { type: String, unique: true, index: true, required: true },
     url: { type: String, required: true },
     visits: { type: Number, default: 0 },
+    editedBy: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
   },

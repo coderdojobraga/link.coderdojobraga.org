@@ -1,4 +1,5 @@
 import type { NextApiResponse } from 'next';
+import pick from 'lodash/pick';
 import { withAuth } from '~/lib/auth';
 import { NextIronRequest } from '~/lib/session';
 import dbConnect from '~/lib/database';
@@ -26,7 +27,7 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
   switch (method) {
     case 'GET':
       try {
-        const redirects = await Redirect.find({}).sort({ created: 'asc' });
+        const redirects: IRedirect[] = await Redirect.find({}).populate({ path: 'editedBy', select: '-password' }).sort({ created: 'asc' });
         res.status(200).json({ success: true, data: redirects });
       } catch (error) {
         res.status(400).json({ success: false, error: { message: error.message } });
@@ -34,8 +35,12 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
       break;
     case 'POST':
       try {
-        const redirect = await Redirect.create(req.body);
-        res.status(201).json({ success: true, data: redirect });
+        const params = pick(req.body, ['name', 'slug', 'url']);
+        const currentUser = req.session.get("currentUser");
+
+        const redirect = await Redirect.create({ ...params, editedBy: currentUser._id });
+
+        res.status(201).json({ success: true, data: await Redirect.populate(redirect, { path: 'editedBy', select: '-password' }) });
       } catch (error) {
         res.status(400).json({ success: false, error: { message: error.message } });
       }

@@ -48,14 +48,16 @@ export default withAuth(async (req: NextIronRequest, res: NextApiResponse<Respon
 
     case 'PUT':
       try {
+        const currentUser = req.session.get("currentUser");
+
         const form: IForm = await Form.findOneAndUpdate(
           { slug },
-          { ...req.body, updated: Date.now() },
+          { ...req.body, updated: Date.now(), editedBy: currentUser._id },
           {
             new: true,
             runValidators: true
           }
-        );
+        ).populate({ path: 'editedBy', select: '-password' });
 
         if (!form) {
           return res.status(404).json({ success: false, error: { message: 'Form not found' } });
